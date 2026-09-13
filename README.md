@@ -1,81 +1,106 @@
-# orient-fivemdc-sqlbot
-This is my old project. Fivem sql-bot. I created it in 2019 using the esx-disc based fivem server infrastructure.
+# Orient FiveM SQL Bot
 
+> **Legacy project** — originally created in 2019 for ESX-based FiveM servers.
 
-Discord üzerinden ESX altyapılı fivem sunucunuz için SQL yönetimini sağlayan, SQL komutlarını çalıştıran ve birçok işlemi yapabilmenizi sağlayan bir discord botu projesidir.
+Orient FiveM SQL Bot is a Node.js Discord administration bot that allows authorized staff to perform SQL-backed player-management tasks without connecting to the game server directly.
 
+## Overview
 
-ESX Altyapısına göre 2019 yılında yapılmış bir bottur. Node.js ile yazılıp js ve sql kullanılmıştır.
-SQL komutlarını çalıştırmaya yarayan bu proje ile offline olarak oyuna girmeden game staff ihtiyacı olmadan hemen hemen herşeyi discord komutları ile yapabilirsiniz.
-Detaylı bir komut sistemi vardır.
+The project was built around the ESX / esx-disc ecosystem used by many FiveM servers in 2019–2020. It combines Discord commands with SQL operations to provide remote administrative workflows for staff members.
 
-BİTMEDİ!
-Ayrıca bak komutları ile  yaparak Dataları görünteleyebilirsiniz.
+## Features
 
-NOT: Bu projeyi Open-Source olarak, 18.10.2025 yılında PUBLIC olarak TheOrient github hesabımda yayınlıyorum. Bot esx-disc envantere göre 2019-2020 yılları arasında yapılmıştır. Dolayısı ile günümüzde kullanılan QBase QB altyapıya göre uyarlayabilirsiniz. Tek yapmanız gereken SQL komutlarını değiştirmek ve tabloları column satırları vs. güncellemek. 
+- Discord-based SQL administration
+- Player identity lookups
+- Detailed player information queries
+- Character deletion / CK operations
+- Ped assignment and removal
+- Ban lookup and unban operations
+- Phone-number updates
+- Billing information lookup
+- Inventory and weapon lookup
+- Motel/storage inventory lookup
+- Configurable job/storage mappings
+- Role-based Discord access
 
+## Requirements
 
-KURULUM 
+- Node.js
+- npm
+- MySQL-compatible database
+- Discord bot application and token
+- ESX-style database schema or a compatible custom schema
 
-node.js indirin ve kurun.
+## Installation
 
-cmd yi açıp botun olduğu dizine cd komutu ile girin Örn: cd C:\bot
+1. Install Node.js.
+2. Clone or download the repository.
+3. Open a terminal in the project directory.
+4. Install dependencies:
 
-cmd ye npm install yazın
+```bash
+npm install
+```
 
-cmd yi kapatın
+5. Configure the environment variables and database settings.
+6. Start the bot using one of the included batch files or directly with Node.js.
 
-.BAT lardan birini başlatın
+## Configuration
 
+### `.env`
 
-AYARLAMALAR-CONFIG
+Configure the Discord bot token and command prefix:
 
-TOKEN ve PREFIX(komut harfi) değiştirmek için ".env" dosyasını açın düzenleyin.
-SQL Bağlantısı bilgileri ve Discord role idlerini değiştirmek için "config.json" açın ve düzenleyin.
-ortmeslekler.json açarak databasedeki Job isimlerini düzenleyin
-İki ayrı baslat.bat var ortbaslat.bat normal çalıştırır v2 olan ise restart atarak çalıştırır sistem fix çalışır. Timeout interval vs. hatalarla karşılaşmazsınız.
+```env
+TOKEN=your_discord_bot_token
+PREFIX=!
+```
 
+### `config.json`
 
+Update the database connection details and Discord role IDs to match your own server.
 
-KOMUTLAR
+### `ortmeslekler.json`
 
-DATABASE EDİT, VERİ BAKMA
+Update the job names so they match the values used in your database.
 
-!ml.ck hexid ---- HEX İD YE CK ATAR
-!ml.ck 1100001118b4d66
+## Example Commands
 
-!ml.kimlik hexid ---- hex idye sahip birinin
-kimlik bilgilerini gösterir
+```text
+!ml.ck <hexid>
+!ml.kimlik <hexid>
+!ml.adetaykimlik <hexid>
+!ml.pedver <hexid> <pedmodel>
+!ml.pedal <hexid>
+!ml.bankaldır <hexid>
+!ml.banbak <hexid>
+!ml.telnodeğiş <hexid> <new_number>
+!ml.faturabilgi <hexid>
+!ml.envbak <hexid>
+!ml.motelbak <hexid>
+!ml.depobak <storage_code>
+```
 
-!ml.adetaykimlik hexid ---- hex idye sahip birinin detaylı kimlik bilgilerini gösterir
+The exact command behavior depends on the database schema and SQL queries included in the project.
 
-!ml.pedver hexid pedmodeli ---- hex idye sahip birine ped verir
-!ml.pedver 1100001118b4d66 s_m_y_dealer_01
+## Modernization Notes
 
-!ml.pedal hexid ---- hex idye sahip birinden ped alır
-!ml.pedal 1100001118b4d66
+This repository targets an older ESX database structure. To adapt it to a modern ESX, QBCore, or custom FiveM environment, update:
 
-!ml.bankaldır hexid ---- hex idye sahip birinin banını kaldırır (ml menüden banlanması gerekmektedir)
+- SQL queries
+- table names
+- column names
+- player identifiers
+- inventory structure
+- authorization logic
+- Discord library/API usage
 
-!ml.banbak hexid ---- hex idye sahip birinin ban bilgilerini görüntüler
+## Security
 
-!ml.telnodeğiş hexid yeniletelefonnumarası ---- telefon numarasını değiştirir
-!ml.telnodegis 1100001118b4d66 0001
+Do not commit real credentials to the repository. Keep Discord tokens and production database credentials outside source control and rotate any credential that has ever been exposed publicly.
 
-!ml.faturabilgi hexid ---- hexidye sahip kişinin faturalarını gösterir
+The current `.env` file contains placeholder values only, but for active development it is still better practice to use an ignored local `.env` file together with an `.env.example` template.
 
-!ml.envbak hexid ---- hex idye sahip birinin üzerindeki item ve silahları gösterir 
+## Legacy Notice
 
-!ml.motelbak hexid ---- hex idye sahip birinin motel kasasındaki itemleri gösterir
-
-!ml.depobak depokodu ---- oluşumun deposunun içeriğini gösterir
-!ml.depobak aztec
-(Setjob kodları ile depo kodları aynıdır) 
-
-
-
-Ardından ortbaslatv2.bat çalıştırın.(Kendim özel yazdığım .bat bota belirli aralıkla restart atmaktadır.)
-
-Beni takip etmeyi ve starlamayı unutmayın. Kullanımı ücretsizdir ancak pazarlanması yasaktır.
-
-DC: byorient
+This project is kept public as part of my development history. It reflects the FiveM/ESX ecosystem and coding patterns available when it was originally created and is not presented as a production-ready modern administration platform.
